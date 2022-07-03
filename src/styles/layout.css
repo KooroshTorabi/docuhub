@@ -1,0 +1,50 @@
+.inject {
+  padding: 15px 0;
+}
+
+.inject h1 {
+  display: none;
+}
+
+.inject ul {
+  border-left: 1px solid lightgrey;
+  padding-left: 15px;
+}
+
+.inject ul li {
+  @apply px-1;
+}
+
+.inject ul li a {
+  @apply py-2  w-full flex whitespace-normal;
+  border: 1px solid transparent;
+  text-decoration: none !important;
+  color: gray;
+  cursor: pointer;
+  padding-left: 10px;
+}
+
+.inject ul li a:hover {
+  @apply bg-gray-200;
+  color: gray;
+}
+
+.inject ul li .active {
+  background-color: white !important;
+  border: 1px solid lightgray;
+  color: #ff4642 !important;
+  border-radius: 2px !important;
+}
+
+.inject ul li ul {
+  padding-left: 10px;
+}
+
+.logo-wrapper-drawer {
+  text-align: left;
+}
+
+.logo-wrapper-drawer img {
+  width: 120px;
+}
+/*# sourceMappingURL=layout.css.map */
