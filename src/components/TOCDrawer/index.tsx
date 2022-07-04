@@ -15,7 +15,7 @@ import { AddTitleCssToH1, ChangeLinks } from '@components/Helpers/functions';
 
 const getContent = async () => {
     // get Table Of README.md from root of github repository
-    console.log(githubURL);
+   
     let githubMarkDownContent = await (await fetch(`${githubURL}SUMMARY.md`)).text()
     var readmeContent = "";
     // http://localhost:3000/docs/games/docs/games/blockchain-roulette.md

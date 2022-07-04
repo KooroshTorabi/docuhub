@@ -1,77 +1,60 @@
-import { Box, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, HStack } from '@chakra-ui/react';
+import { Box, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react'
 import { SearchIcon, HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { githubURL } from "@components/Helpers/GlobalVariables.js";
-
-import { unified } from "unified";
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
-import rehypeStringify from "rehype-stringify";
-import { AddTitleCssToH1, ChangeLinks } from '@components/Helpers/functions';
 import Link from 'next/link';
+import { useAppDispatch, useAppSelector } from 'src/reduxtoolkit/hooks';
+import parse, { HTMLReactParserOptions, Element, attributesToProps } from 'html-react-parser';
+import { setContent, setCurrentUrl } from '@reduxtoolkit/bodySlice';
+import { getBody } from '@components/Helpers/functions';
 
 
-const getContent = async () => {
-    // get Table Of README.md from root of github repository
-    let githubMarkDownContent = await (await fetch(`${githubURL}/SUMMARY.md`)).text()
-    // console.log("githubMarkDownContent = ", githubMarkDownContent);
-    var readmeContent = "";
-    await unified()
-        .use(remarkParse)
-        // add any remark plugins here
-        .use(remarkRehype, { allowDangerousHtml: true })
-        // add any rehype plugins here
-        .use(rehypeRaw)
-        .use(rehypeSanitize)
-        .use(rehypeStringify)
-        .process(githubMarkDownContent)
-        .then(
-            (file) => {
-                readmeContent = file.value.toString();
-            }
-        )
-        .catch((err) => { });
-    return readmeContent;
-}
 
 const TOC = () => {
-    const [originalToc, setOriginalToc] = useState(``);
-    const [toc, setToc] = useState(``);
-
-    const getContentAwait = async () => {
-        const tocContent = await getContent()
-        setOriginalToc(tocContent);
-        return tocContent;
-    }
-
-    useEffect(() => {
-        if (originalToc === "")
-            getContentAwait();
-    }, []);
-    useEffect(() => {
-        if (toc === "")
-            setToc(AddTitleCssToH1(ChangeLinks(originalToc)));
-        // setToc(AddTitleCssToH1(ChangeLinks(originalToc)));
-    }, [originalToc])
+    const toc = useAppSelector((state: any) => state.toc.tocHtml);
+    const dispatch = useAppDispatch()
+    const options: HTMLReactParserOptions = {
+        replace: domNode => {
+            if (domNode instanceof Element && domNode.attribs) {
+                if (domNode.attribs && domNode.name === 'a') {
+                    const props = attributesToProps(domNode.attribs);
+                    // var ddd: any = domNode.children[0]?.data
+                    var node: any = domNode.children[0];
+                    return <Text cursor="pointer" {...props} onClick={async () => {
+                        dispatch(setContent(""))
+                        let content = await getBody(props.href)
+                        dispatch(setContent(content + ""))
+                        dispatch(setCurrentUrl(props.href))
+                    }}> {node?.data}</Text>;
+                }
+            }
+        }
+    };
 
     return (
-        <Flex h="92vh" overflow={"scroll"}
-            overflowX={"hidden"}
-            display={["none", "none", "block", "block"]}
-            pb="50px"
-        >
-            <Box className={"toc"}
+        <VStack>
+
+            <Flex h="92vh" overflow={"scroll"}
+                overflowX={"hidden"}
+                display={["none", "none", "block", "block"]}
+                pb="50px"
+            >
+
+                <Box className={"toc"}>
+                    {parse(toc, options)}
+
+                </Box>
+                {/* <Box className={"toc"}
                 w="20vw"
                 px={"20px"}
                 pb={"50px"}
                 h="50vh"
                 dangerouslySetInnerHTML={{ __html: toc }}
-            />
-            <Box h="150px"></Box>
-        </Flex>
+            /> */}
+                <Box h="150px"></Box>
+            </Flex>
 
+        </VStack>
     )
 }
 
