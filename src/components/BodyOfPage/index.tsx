@@ -1,45 +1,95 @@
-import { Box, HStack, IconButton, Text } from '@chakra-ui/react';
+import { Box, Flex, HStack, IconButton, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
-import { SearchIcon, HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
-
-import { unified } from "unified";
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
-import rehypeStringify from "rehype-stringify";
-import { githubURL } from "@components/Helpers/GlobalVariables.js";
-import { NextPageContext } from 'next';
+import { useAppDispatch, useAppSelector } from '@reduxtoolkit/hooks';
+import { InsideSpinner, Spinner } from '@components/UI/Spinner';
+import { LinkPrevious, LinkNext } from "grommet-icons";
+import { setContent, setCurrentUrl } from '@reduxtoolkit/bodySlice';
+import { getBody } from '@components/Helpers/functions';
 
 
-
-const BodyOfPageL1 = (props: any) => {
+const BodyOfPage = () => {
     const [originalContent, setOriginalContent] = useState("");
-    const [content, setContent] = useState(props.content);
+    const content = useAppSelector((state: any) => state.body.content);
+    const tocItems = useAppSelector((state: any) => state.toc.items);
+    const currentUrl = useAppSelector((state: any) => state.body.currentUrl);
     const router = useRouter()
-    // const { l1, l2, l3 } = router.query
-    // console.log(`l1 = ${l1}, l2= ${l2}, l3= ${l3}, ${router.query}`, router.query, typeof l2);
+    const dispatch = useAppDispatch()
 
     return (
-        <HStack overflow={"scroll"} overflowX={"hidden"} >
+        <>
+            {!content && (<Spinner></Spinner>)
+            }
+            {
 
-            <Box
-                px={"20px"}
-                className={"inject"}
-                h="92vh"
-                w="full"
-                fontFamily={"Ropa Sans"}
-                fontSize={"24px"}
-                dangerouslySetInnerHTML={{ __html: content }}
-            />
-            <Box h="50px"><Text></Text></Box>
-        </HStack>
+                content && (
+
+                    <VStack>
+                        <HStack w="full" overflow={"scroll"} overflowX={"hidden"} >
+                            <Box
+                                h="86vh"
+                                px={"20px"}
+                                className={"inject"}
+                                // h="92vh"
+                                w="full"
+                                fontFamily={"Ropa Sans"}
+                                fontSize={"24px"}
+                                dangerouslySetInnerHTML={{ __html: content }}
+                            />
+                        </HStack>
+                        <HStack w="full" >
+                            <Flex w="full">
+                                {tocItems.findIndex((item: any) => item.address === currentUrl) > 0 &&
+                                    <Flex h="50px" w="full" border="2px" borderRadius={5}
+                                        alignItems={"center"} justifyContent="left" pl="15px" mr="10px"
+                                        cursor="pointer"
+                                        onClick={
+                                            async () => {
+                                                var url = tocItems[tocItems.findIndex((item: any) => item.address === currentUrl) - 1].address
+                                                dispatch(setContent(""))
+                                                let content = await getBody(url)
+                                                dispatch(setContent(content + ""))
+                                                dispatch(setCurrentUrl(url))
+                                            }
+                                        }
+                                    >
+                                        <LinkPrevious />
+                                        <Text fontFamily={"Ropa Sans"} fontSize={"24px"} ml="10px">
+                                            {tocItems[tocItems.findIndex((item: any) => item.address === currentUrl) - 1].title.replace("&#x26;", "&")}
+                                        </Text>
+                                    </Flex>
+                                }
+                                {tocItems.findIndex((item: any) => item.address === currentUrl) < tocItems.length-1 &&
+                                    <Flex h="50px" w="full" border="2px" borderRadius={5}
+                                        alignItems={"center"} justifyContent="right" pr="15px" ml="10px"
+                                        cursor="pointer"
+                                        onClick={
+                                            async () => {
+                                                var url = tocItems[tocItems.findIndex((item: any) => item.address === currentUrl) + 1].address
+                                                dispatch(setContent(""))
+                                                let content = await getBody(url)
+                                                dispatch(setContent(content + ""))
+                                                dispatch(setCurrentUrl(url))
+                                            }
+                                        }
+                                    >
+                                        <Text
+                                            fontFamily={"Ropa Sans"} fontSize={"24px"} mr="10px">
+                                            {(tocItems[tocItems.findIndex((item: any) => item.address === currentUrl) + 1].title.replace("&#x26;", "&"))}
+                                        </Text>
+                                        <LinkNext />
+                                    </Flex>
+                                }
+                            </Flex>
+                        </HStack>
+
+
+                    </VStack>
+                )
+            }
+        </>
     )
 }
 
-
-
-
-export default BodyOfPageL1
+export default BodyOfPage

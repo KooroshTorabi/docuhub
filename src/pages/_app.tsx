@@ -16,7 +16,9 @@ import Layout from "@components/Layout";
 import Dashboard from "@components/Dashboard";
 import Home from '.';
 import { ChakraProvider } from '@chakra-ui/react';
+import { Provider as ReduxProvider } from 'react-redux';
 import { theme } from "src/configs/theme";
+import { store } from 'src/reduxtoolkit/store';
 // import Home from '.';
 // const theme = createTheme({});
 
@@ -59,7 +61,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     // <Layout>
     <ChakraProvider theme={theme}>
+    <ReduxProvider store={store}>
+
       <Component {...pageProps} />
+    </ReduxProvider>
     </ChakraProvider>
     // </Layout>
     //  <ThemeProvider theme={theme}>

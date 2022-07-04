@@ -1,45 +1,39 @@
-import React, { useEffect, useState } from "react";
-import { action } from "../../redux/actions.js";
-import { useDispatch, useSelector } from "react-redux";
 import { NextPage } from "next";
 import { Box, Grid, GridItem, useDisclosure } from "@chakra-ui/react";
 
 import Header from "@components/Header";
-import BodyOfPageL1 from "@components/BodyOfPage";
+import BodyOfPage from "@components/BodyOfPage";
 import TOCDrawer from "@components/TOCDrawer";
-import { useRouter } from "next/router.js";
 import TOC from "@components/TOC";
-const drawerWidth = 300;
+import { useAppSelector } from "@reduxtoolkit/hooks";
 
-type TProps = {
-  content: string;
-}
-
-const Layout: NextPage<TProps> = (props: any) => {
+const Layout: NextPage = (props: any) => {
   // // const values = useSelector((state: any) => state.items);
   // // const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toclist = useAppSelector((state: any) => state.toc.items);
   return (
     <Box maxWidth="100%" width="100%" >
 
       <Header isOpen={isOpen} onOpen={onOpen} onClose={onClose}></Header>
 
       <Grid
-        templateAreas={`"header header header"
-      "nav main toc"
-      "nav footer footer"`}
+        templateAreas={`"header header"
+      "nav main"
+      "nav footer"`}
         gridTemplateRows={'0px 1fr 0px'}
         gridTemplateColumns={['0vw 1fr', '0vw 1fr', '20vw 1fr 20vw', '20vw 1fr 20vw']}
         gap={0}
+        h="90vh"
       >
 
         <GridItem w="20vw" area={'nav'} >
           <TOC />
         </GridItem>
-        <GridItem area={'main'} h="90vh">
-          <BodyOfPageL1 content={props.content} ></BodyOfPageL1>
+        <GridItem area={'main'} >
+          <BodyOfPage />
         </GridItem>
-        <GridItem area={'toc'} h="90vh">
+        <GridItem area={'toc'} >
         </GridItem>
       </Grid>
 
