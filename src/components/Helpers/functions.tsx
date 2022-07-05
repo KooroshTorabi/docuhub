@@ -89,7 +89,7 @@ export const getTOCList = (tocHtml: string) => {
         //   console.log(`Found match, group ${groupIndex}: ${match}`);
         // });
     }
-    console.log(list)
+    // console.log(list)
 
     return list;
 

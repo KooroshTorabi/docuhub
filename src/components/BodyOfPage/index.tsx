@@ -14,6 +14,7 @@ const BodyOfPage = () => {
     const content = useAppSelector((state: any) => state.body.content);
     const tocItems = useAppSelector((state: any) => state.toc.items);
     const currentUrl = useAppSelector((state: any) => state.body.currentUrl);
+    console.log("current URL=", currentUrl)
     const router = useRouter()
     const dispatch = useAppDispatch()
 
@@ -22,7 +23,6 @@ const BodyOfPage = () => {
             {!content && (<Spinner></Spinner>)
             }
             {
-
                 content && (
 
                     <VStack>
@@ -83,8 +83,6 @@ const BodyOfPage = () => {
                                 }
                             </Flex>
                         </HStack>
-
-
                     </VStack>
                 )
             }

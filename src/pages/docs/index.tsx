@@ -11,7 +11,6 @@ import rehypeSanitize from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 import { githubURL } from "@components/Helpers/GlobalVariables.js";
 import { AddTitleCssToH1, addTitleOfImageFromAlt, ChangeLinks, getNodeTree, getTOCList, loadGitbookAssets } from '@components/Helpers/functions';
-import { Button } from '@chakra-ui/button';
 import { Container } from '@chakra-ui/react';
 import Head from 'next/head';
 import Layout from '@components/Layout';
@@ -55,14 +54,14 @@ export async function getServerSideProps({ req }: NextPageContext) {
       }
     )
     .catch((err: any) => {
-      // bodyContent = "xxxxxxx = ";
       console.log(err)
     });
   return {
     props: {
       toc: getTOCList(toc_html),// AddTitleCssToH1(ChangeLinks(tocList)),
       tocHtml: toc_html,
-      body: bodyContent
+      body: bodyContent,
+      currentUrl: ""
     },
   }
 }
@@ -70,7 +69,8 @@ export async function getServerSideProps({ req }: NextPageContext) {
 type TProps = {
   toc: [],
   tocHtml: string,
-  body: string
+  body: string,
+  currentUrl: string
 };
 
 type TTocItem = {
@@ -78,15 +78,14 @@ type TTocItem = {
   title: string
 }
 
-const Home: NextPage<TProps> = ({ toc, tocHtml, body }) => {
-
+const Home: NextPage<TProps> = ({ toc, tocHtml, body, currentUrl }) => {
   const dispatch = useAppDispatch()
   // const toclist = useAppSelector((state: any) => state.toc.items);
   useEffect(() => {
     dispatch(setTOC(toc))
     dispatch(setTOCHtml(tocHtml))
     dispatch(setContent(body))
-    dispatch(setCurrentUrl(""))
+    dispatch(setCurrentUrl(currentUrl))
 
   }, [toc, dispatch])
 

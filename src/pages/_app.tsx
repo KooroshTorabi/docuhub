@@ -19,6 +19,10 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { theme } from "src/configs/theme";
 import { store } from 'src/reduxtoolkit/store';
+
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
+
 // import Home from '.';
 // const theme = createTheme({});
 
@@ -58,6 +62,24 @@ import { store } from 'src/reduxtoolkit/store';
 
 // { Component, pageProps }: AppProps
 function MyApp({ Component, pageProps }: AppProps) {
+  // const router = useRouter()
+
+  // useEffect(() => {
+  //   const handleRouteChange = (url: any, { shallow }: any) => {
+  //     console.log(
+  //       `App is changing to ${url} ${shallow ? 'with' : 'without'
+  //       } shallow routing`
+  //     )
+  //   }
+  //   router.events.on('routeChangeStart', handleRouteChange)
+
+  //   // If the component is unmounted, unsubscribe
+  //   // from the event with the `off` method:
+  //   return () => {
+  //     router.events.off('routeChangeStart', handleRouteChange)
+  //   }
+  // }, [])
+
   return (
     // <Layout>
     <ChakraProvider theme={theme}>

@@ -7,12 +7,14 @@ import { useAppDispatch, useAppSelector } from 'src/reduxtoolkit/hooks';
 import parse, { HTMLReactParserOptions, Element, attributesToProps } from 'html-react-parser';
 import { setContent, setCurrentUrl } from '@reduxtoolkit/bodySlice';
 import { getBody } from '@components/Helpers/functions';
+import { useRouter } from 'next/router';
 
 
 
 const TOC = () => {
     const toc = useAppSelector((state: any) => state.toc.tocHtml);
     const dispatch = useAppDispatch()
+    const router = useRouter()
     const options: HTMLReactParserOptions = {
         replace: domNode => {
             if (domNode instanceof Element && domNode.attribs) {
@@ -21,8 +23,11 @@ const TOC = () => {
                     // var ddd: any = domNode.children[0]?.data
                     var node: any = domNode.children[0];
                     return <Text cursor="pointer" {...props} onClick={async () => {
+                        router.push("", "/docs" + props.href, { shallow: true })
                         dispatch(setContent(""))
+                        console.log(props.href)
                         let content = await getBody(props.href)
+                        console.log(content)
                         dispatch(setContent(content + ""))
                         dispatch(setCurrentUrl(props.href))
                     }}> {node?.data}</Text>;
@@ -30,7 +35,6 @@ const TOC = () => {
             }
         }
     };
-
     return (
         <VStack>
 
@@ -39,10 +43,8 @@ const TOC = () => {
                 display={["none", "none", "block", "block"]}
                 pb="50px"
             >
-
                 <Box className={"toc"}>
-                    {parse(toc, options)}
-
+                    {toc && parse(toc, options)}
                 </Box>
                 {/* <Box className={"toc"}
                 w="20vw"
