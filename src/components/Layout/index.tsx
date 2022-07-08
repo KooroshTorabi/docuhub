@@ -1,41 +1,43 @@
 import { NextPage } from "next";
-import { Box, Grid, GridItem, useDisclosure } from "@chakra-ui/react";
+import { Box, Grid, GridItem, HStack, Text, useDisclosure, VStack } from "@chakra-ui/react";
 
 import Header from "@components/Header";
 import BodyOfPage from "@components/BodyOfPage";
 import TOCDrawer from "@components/TOCDrawer";
 import TOC from "@components/TOC";
-import { useAppSelector } from "@reduxtoolkit/hooks";
+import TocOfBody from "../TocOfBody";
+
 
 const Layout: NextPage = (props: any) => {
-  // // const values = useSelector((state: any) => state.items);
-  // // const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const toclist = useAppSelector((state: any) => state.toc.items);
+  // const bodyRef = useRef();
   return (
-    <Box maxWidth="100%" width="100%" >
+    <Box maxWidth="100%" width="100%"
+      overflow={"hidden"}
+      overflowX={"hidden"}
+      overflowY={"hidden"}
+    >
 
-      <Header isOpen={isOpen} onOpen={onOpen} onClose={onClose}></Header>
+      <VStack
+        overflow={"hidden"}
+        overflowX={"hidden"}
+        overflowY={"hidden"}
 
-      <Grid
-        templateAreas={`"header header"
-      "nav main"
-      "nav footer"`}
-        gridTemplateRows={'0px 1fr 0px'}
-        gridTemplateColumns={['0vw 1fr', '0vw 1fr', '20vw 1fr 20vw', '20vw 1fr 20vw']}
-        gap={0}
-        h="90vh"
-      >
 
-        <GridItem w="20vw" area={'nav'} >
-          <TOC />
-        </GridItem>
-        <GridItem area={'main'} >
-          <BodyOfPage />
-        </GridItem>
-        <GridItem area={'toc'} >
-        </GridItem>
-      </Grid>
+        h="100vh" spacing={0}>
+        <HStack
+          overflow={"hidden"}
+          overflowX={"hidden"}
+          overflowY={"hidden"}
+
+          w="100%" h={["100px", "100px", "8vh", "8vh"]} sx={{ gap: "0px" }} bg="blueviolet" spacing={0}>
+          <Header isOpen={isOpen} onOpen={onOpen} onClose={onClose}></Header>
+        </HStack>
+        <HStack w="100%" h={["full", "full", "92vh", "92vh"]} spacing={0}>
+          <TOC w="20vw" />
+          <BodyOfPage w={["", "", "80vw", "80vw"]} h={["90vh", "90vh", "92vh", "92vh"]} mt="200px" />
+        </HStack>
+      </VStack>
 
       <TOCDrawer isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
 

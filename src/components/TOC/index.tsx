@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { SearchIcon, HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { githubURL } from "@components/Helpers/GlobalVariables.js";
 import Link from 'next/link';
-import { useAppDispatch, useAppSelector } from 'src/reduxtoolkit/hooks';
+import { useAppDispatch, useAppSelector } from '@reduxtoolkit/hooks';
 import parse, { HTMLReactParserOptions, Element, attributesToProps } from 'html-react-parser';
 import { setContent, setCurrentUrl } from '@reduxtoolkit/bodySlice';
 import { getBody } from '@components/Helpers/functions';
@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 
 
 
-const TOC = () => {
+const TOC = (props: any) => {
     const toc = useAppSelector((state: any) => state.toc.tocHtml);
     const dispatch = useAppDispatch()
     const router = useRouter()
@@ -23,37 +23,32 @@ const TOC = () => {
                     // var ddd: any = domNode.children[0]?.data
                     var node: any = domNode.children[0];
                     return <Text cursor="pointer" {...props} onClick={async () => {
-                        router.push("", "/docs" + props.href, { shallow: true })
+                        router.push("/docs" + props.href, undefined, { shallow: true })
+                        dispatch(setCurrentUrl(""))
                         dispatch(setContent(""))
-                        console.log(props.href)
                         let content = await getBody(props.href)
-                        console.log(content)
-                        dispatch(setContent(content + ""))
                         dispatch(setCurrentUrl(props.href))
+                        dispatch(setContent(content + ""))
                     }}> {node?.data}</Text>;
                 }
             }
         }
     };
     return (
-        <VStack>
-
-            <Flex h="92vh" overflow={"scroll"}
+        <VStack h="100%" display={["none", "none", "block", "block"]}>
+            <Flex
+                mx="4px"
+                h="100%" 
+                overflow={"hidden"}
                 overflowX={"hidden"}
+                overflowY={"visible"}
                 display={["none", "none", "block", "block"]}
-                pb="50px"
+                pb="10px"
+                w={props.w}
             >
-                <Box className={"toc"}>
+                <Box className={"tocbody toc"}>
                     {toc && parse(toc, options)}
                 </Box>
-                {/* <Box className={"toc"}
-                w="20vw"
-                px={"20px"}
-                pb={"50px"}
-                h="50vh"
-                dangerouslySetInnerHTML={{ __html: toc }}
-            /> */}
-                <Box h="150px"></Box>
             </Flex>
 
         </VStack>

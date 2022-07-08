@@ -121,157 +121,6 @@ a {
   box-sizing: border-box;
 }
 
-/* ul {
-  list-style-type: none;
-  border-left: 1px solid lightgrey;
-    padding-left: 15px;
-} */
-
-ul { 
-  list-style-type: none; 
-}
-
-label{
-  background-color: #2649e4;
-  border-radius: 5px;
-  padding: 3px;
-  padding-left: 25px;
-  color: rgb(58, 34, 34);
-}
-
-.toc ul>li {
-  margin: 5px;
-  margin-top:10px ;
-  /* padding-: 1px; */
-  border: 1px solid rgb(151, 177, 164);
-  border-radius: 8px;
-  font-size: 18px;
-  font-family: "Ropa Sans";
-  padding-left: 5px;
-  background-color: rgb(225, 226, 225);
-}
-.toc ul>li>a{
-  font-size: 16px;
-  font-family: "Ropa Sans";
-  padding-left: 5px;
-}
-
-.toc ul>li>ul>li {
-  margin: 5px;
-  /* padding-: 1px; */
-  border: 1px solid rgb(160, 182, 171);
-  border-radius: 8px;
-  font-size: 18px;
-  font-family: "Ropa Sans";
-  padding-left: 5px;
-  background-color: rgb(247, 219, 210);
-}
-
-.toc ul>li>ul>li>ul>li {
-  /* margin: 5px; */
-  /* padding-: 1px; */
-  border: 1px solid rgb(160, 182, 171);
-  border-radius: 10px;
-  font-size: 18px;
-  font-family: "Ropa Sans";
-  padding-left: 5px;
-  margin-left: 15px!important;
-  margin-right: 15px!important;
-  background-color: rgb(238, 195, 178);
-}
-
-
-.toc li{
-  padding-top: 5px;
-  padding-bottom: 5px;
- 
-}
-
-ali>a {
-  margin: 5px;
-  /* padding-: 1px; */
-  background-color: rgb(247, 219, 210);
-  border: 1px solid rgb(10, 110, 60);
-  border-radius: 8px;
-  font-size: 18px;
-  font-family: "Ropa Sans";
-  padding: 5px;
-}
-
-
-
-img{
-  /* max-width: 90vw!important; */
-  display: block;
-   margin-left: auto;
-  margin-right: auto;
- /* width: 80%; */
-  margin-top: 5px;
-  /* padding: 30px; */
-}
-
-
-.image-alt{
-  color: rgb(24, 146, 95);
-  max-width: 90vw!important;
-  display: block;
-  /* width: 50%; */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 30px;
-}
-
-
-hr{
-  border: 3px solid rgb(10, 110, 60);
-  margin-top: 20px!important;
-  margin-bottom: 20px!important;
-}
-.title{
-  font-size: 24px!important;
-  font-family: "Ropa Sans";
-  padding-left: 25px;
-  padding-top: 10px;
-}
-
-h1{
-  font-size: 48px!important;
-  font-family: "Ropa Sans";
-  padding-left: 1px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-/* background-color: #08f; */
-  border-bottom: 1px solid rgb(170, 170, 170);
-  margin-bottom: 23px!important;
-}
-
-h3{
-  font-size: 38px!important;
-  font-family: "Ropa Sans";
-  padding-left: 25px;
-  padding-top: 10px;
-  padding-bottom: 20px;
-
-}
-
-ol{
-  margin-top: 20px!important;
-  margin-bottom: 20px!important;
-  margin-left: 20px!important;
-}
-
-ol>li{
-  margin-left: 20px;
-}
-
-/* li {
-    border: 1px solid transparent;
-    text-decoration: none !important;
-    color: gray;
-    cursor: pointer;
-    padding-left: 10px;
-} */
 .grayscale {
   filter: grayscale(100%);
 }
@@ -369,6 +218,186 @@ body {
   cursor: pointer;
 transform: rotate(10deg);
 }
+
+
+
+.toc ul li{list-style-type: none;}
+
+.toc ul>li {
+  margin: 5px;
+  margin-top:10px ;
+  /* padding-: 1px; */
+  border: 1px solid rgb(151, 177, 164);
+  border-radius: 8px;
+  font-size: 18px;
+  font-family: "Ropa Sans";
+  padding-left: 5px;
+  background-color: rgb(225, 226, 225);
+}
+.toc ul>li>a{
+  font-size: 16px;
+  font-family: "Ropa Sans";
+  padding-left: 5px;
+}
+
+.toc ul>li>ul>li {
+  margin: 5px;
+  /* padding-: 1px; */
+  border: 1px solid rgb(160, 182, 171);
+  border-radius: 8px;
+  font-size: 18px;
+  font-family: "Ropa Sans";
+  padding-left: 5px;
+  background-color: rgb(247, 219, 210);
+}
+
+.toc ul>li>ul>li>ul>li {
+  /* margin: 5px; */
+  /* padding-: 1px; */
+  border: 1px solid rgb(160, 182, 171);
+  border-radius: 10px;
+  font-size: 18px;
+  font-family: "Ropa Sans";
+  padding-left: 5px;
+  margin-left: 15px!important;
+  margin-right: 15px!important;
+  background-color: rgb(238, 195, 178);
+}
+
+
+.toc li{
+  padding-top: 5px;
+  padding-bottom: 5px;
+ 
+}
+
+ali>a {
+  margin: 5px;
+  /* padding-: 1px; */
+  background-color: rgb(247, 219, 210);
+  border: 1px solid rgb(10, 110, 60);
+  border-radius: 8px;
+  font-size: 18px;
+  font-family: "Ropa Sans";
+  padding: 5px;
+}
+
+.docbody {
+  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.docbody img{
+  /* max-width: 90vw!important; */
+  display: block;
+   margin-left: auto;
+  margin-right: auto;
+ /* width: 80%; */
+  margin-top: 5px;
+  /* padding: 30px; */
+  border-radius: 15px;
+}
+
+.body-scroll-box{
+  overflow: scroll!important;
+  overflow-y: scroll!important;
+  overflow-x: hidden!important;
+  scrollbar-width: 140px;
+}
+
+.docbody  .image-alt{
+  color: rgb(24, 146, 95);
+  max-width: 90vw!important;
+  display: block;
+  /* width: 50%; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 30px;
+}
+
+
+.docbody hr{
+  border: 3px solid rgb(10, 110, 60);
+  margin-top: 20px!important;
+  margin-bottom: 20px!important;
+}
+.tocbody .title{
+  font-size: 24px!important;
+  font-family: "Ropa Sans";
+  padding-left: 25px;
+  padding-top: 10px;
+}
+
+.docbody h1{
+  font-size: 48px!important;
+  font-family: "Ropa Sans";
+  padding-left: 1px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+/* background-color: #08f; */
+  border-bottom: 1px solid rgb(170, 170, 170);
+  margin-bottom: 23px!important;
+}
+
+.docbody h3{
+  font-size: 38px!important;
+  font-family: "Ropa Sans";
+  padding-left: 25px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+
+}
+
+.docbody ol{
+  margin-top: 20px!important;
+  margin-bottom: 20px!important;
+  margin-left: 20px!important;
+}
+
+.docbody ol>li{
+  margin-left: 20px;
+}
+
+.tocbody ol{
+  margin-top: 20px!important;
+  margin-bottom: 20px!important;
+  margin-left: 20px!important;
+}
+
+.tocbody ol>li{
+  margin-left: 20px;
+}
+
+.toc-of-body-all:hover {
+  background-color: rgb(255, 255, 255);
+}
+
+.toc-of-body .active{
+  background-color: #c4cae2AA;
+  border-radius: 6px;
+  padding: 5px;
+  padding-right: 20px;
+  padding-left: 10px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.toc-of-body .inactive{
+  /* background-color: #c4cae2AA; */
+  border-radius: 6px;
+  padding: 5px;
+  padding-right: 20px;
+  padding-left: 10px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.toc-of-body .expanded{
+  background-color: aqua;
+}
+
 
 .SpinnerOverlay {
   height: 60vh;
