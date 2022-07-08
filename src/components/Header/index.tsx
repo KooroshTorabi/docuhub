@@ -7,7 +7,7 @@ import Logo from "@assets/Logo.png"
 const Header = (props: any) => {
     const { isOpen, onOpen, onClose } = props;
     return (
-        <HStack bg="gray.200">
+        <HStack bg="gray.200" w="100%" h="100%" sx={{ gap: "0px" }} m="0">
             <IconButton
                 display={["block", "block", "none", "none"]}
                 m={3}

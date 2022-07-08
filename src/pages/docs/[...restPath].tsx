@@ -1,7 +1,7 @@
-// Importing useRouter() method
-import { NextPageContext } from 'next';
-import { useRouter } from 'next/router'
-import Home from './index';
+import type { NextPage, NextPageContext } from 'next'
+import { useAppSelector, useAppDispatch } from "@reduxtoolkit/hooks"
+import { setTOC, setTOCHtml } from '@reduxtoolkit/tocSlice';
+import { useEffect, useRef, useState } from 'react'
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
@@ -9,7 +9,12 @@ import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 import { githubURL } from "@components/Helpers/GlobalVariables.js";
-import { AddTitleCssToH1, addTitleOfImageFromAlt, ChangeLinks, getNodeTree, getTOCList, loadGitbookAssets } from '@components/Helpers/functions';
+import { addKebabIdToHTags, AddTitleCssToH1, addTitleOfImageFromAlt, ChangeLinks, getNodeTree, getTOCList, loadGitbookAssets } from '@components/Helpers/functions';
+import { Container } from '@chakra-ui/react';
+import Head from 'next/head';
+import Layout from '@components/Layout';
+import { setContent, setCurrentUrl } from '@reduxtoolkit/bodySlice';
+import { useRouter } from 'next/router';
 // function Gfx() {
 
 //   // Initializing useRouter() method
@@ -21,7 +26,6 @@ import { AddTitleCssToH1, addTitleOfImageFromAlt, ChangeLinks, getNodeTree, getT
 
 export async function getServerSideProps(req: any) {
   var resolvedUrl = req?.resolvedUrl;
-  console.log(resolvedUrl)
   let githubMarkDownContent = await (await fetch(`${githubURL}SUMMARY.md`)).text()
   var toc_html: string = ""
   await unified()
@@ -42,11 +46,11 @@ export async function getServerSideProps(req: any) {
     .catch((err) => { });
 
   resolvedUrl = resolvedUrl.replace(/^\/docs\//gm, '');
-  console.log(resolvedUrl)
+  resolvedUrl = resolvedUrl.replace(/\#(.*)/gm, '');
   const bodyUrl = `https://raw.githubusercontent.com/babyloniaapp/docs/main/` + resolvedUrl;
-  console.log(bodyUrl)
 
   let bodyContentMd = await (await fetch(`${bodyUrl}`)).text()
+
   let bodyContent = ""
   await unified()
     .use(remarkParse)
@@ -59,12 +63,11 @@ export async function getServerSideProps(req: any) {
     .process(bodyContentMd)
     .then(
       (htmlfile: any) => {
-        bodyContent = addTitleOfImageFromAlt(loadGitbookAssets(htmlfile.value.toString()));
+        bodyContent = addKebabIdToHTags(addTitleOfImageFromAlt(loadGitbookAssets(htmlfile.value.toString())));
       }
     )
     .catch((err: any) => {
-      // bodyContent = "xxxxxxx = ";
-      console.log(err)
+      console.log("Error in restPath", err)
     });
   return {
     props: {
@@ -77,4 +80,54 @@ export async function getServerSideProps(req: any) {
 }
 
 
-export default Home;
+type TProps = {
+  toc: [],
+  tocHtml: string,
+  body: string,
+  currentUrl: string
+};
+
+type TTocItem = {
+  address: string,
+  title: string
+}
+
+const Home: NextPage<TProps> = ({ toc, tocHtml, body, currentUrl }) => {
+  const dispatch = useAppDispatch()
+  const [url, setUrl] = useState("");
+  const router = useRouter()
+  const ShallowUrl = router.asPath.replace(/\#(.*)/gm, '')
+  useEffect(() => {
+    if ("/docs" + currentUrl === ShallowUrl) {
+      dispatch(setTOC(toc))
+      dispatch(setTOCHtml(tocHtml))
+      dispatch(setContent(body))
+      dispatch(setCurrentUrl(currentUrl))
+      setUrl(currentUrl)
+    }
+  }, [])
+
+  return (
+
+    <Container
+      maxW=".xl"
+      bg="black.900"
+      pt="0"
+      pb="0"
+      pl="0"
+      pr="0"
+      w="100vw"
+      h="100vh"
+    >
+      <Head>
+        <title>Docs</title>
+        <meta name="description" content="Documentation of Babylonia" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Layout />
+
+    </Container>
+  )
+}
+
+export default Home

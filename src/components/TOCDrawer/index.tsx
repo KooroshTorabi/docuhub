@@ -1,64 +1,39 @@
-import { Box, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, HStack } from '@chakra-ui/react';
+import { Box, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, HStack, Text } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react'
 import { SearchIcon, HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import { githubURL } from "@components/Helpers/GlobalVariables.js";
-
-import { unified } from "unified";
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
-import rehypeStringify from "rehype-stringify";
-import { AddTitleCssToH1, ChangeLinks } from '@components/Helpers/functions';
-
-
-
-const getContent = async () => {
-    // get Table Of README.md from root of github repository
-   
-    let githubMarkDownContent = await (await fetch(`${githubURL}SUMMARY.md`)).text()
-    var readmeContent = "";
-    // http://localhost:3000/docs/games/docs/games/blockchain-roulette.md
-    // https://github.com/babyloniaapp/docs/blob/main/games/blockchain-roulette.md
-
-    // https://raw.githubusercontent.com/babyloniaapp/docs/main/games/README.md
-
-    await unified()
-        .use(remarkParse)
-        // add any remark plugins here
-        .use(remarkRehype, { allowDangerousHtml: true })
-        // add any rehype plugins here
-        .use(rehypeRaw)
-        .use(rehypeSanitize)
-        .use(rehypeStringify)
-        .process(githubMarkDownContent)
-        .then(
-            (file) => {
-                readmeContent = file.value.toString();
-            }
-        )
-        .catch((err) => { });
-    return readmeContent;
-}
-
-
+import { useAppDispatch, useAppSelector } from '@reduxtoolkit/hooks';
+import parse, { HTMLReactParserOptions, Element, attributesToProps } from 'html-react-parser';
+import { setContent, setCurrentUrl } from '@reduxtoolkit/bodySlice';
+import { getBody } from '@components/Helpers/functions';
+import { useRouter } from 'next/router';
 
 const TOCDrawer = (props: any) => {
+    const toc = useAppSelector((state: any) => state.toc.tocHtml);
+    const dispatch = useAppDispatch()
+    const router = useRouter()
+    const options: HTMLReactParserOptions = {
+        replace: domNode => {
+            if (domNode instanceof Element && domNode.attribs) {
+                if (domNode.attribs && domNode.name === 'a') {
+                    const props = attributesToProps(domNode.attribs);
+                    // var ddd: any = domNode.children[0]?.data
+                    var node: any = domNode.children[0];
+                    return <Text cursor="pointer" {...props} onClick={async () => {
+                        onClose();
+                        router.push("/docs" + props.href, undefined, { shallow: true })
+                        dispatch(setCurrentUrl(""))
+                        dispatch(setContent(""))
+                        let content = await getBody(props.href)
+                        dispatch(setCurrentUrl(props.href))
+                        dispatch(setContent(content + ""))
+                    }}> {node?.data}</Text>;
+                }
+            }
+        }
+    };
+
     const { isOpen, onOpen, onClose } = props;
     const btnRef: any = useRef<HTMLHeadingElement>(null)
-    const [toc, setToc] = useState(``);
-
-    const getContentAwait = async () => {
-        setToc(await getContent());
-        console.log(toc + "aaaaaa");
-    }
-
-    useEffect(() => {
-        getContentAwait();
-        setToc(AddTitleCssToH1(ChangeLinks(toc)));
-
-    }, []);
-
     return (
         <Drawer isOpen={isOpen}
             placement='left'
@@ -84,10 +59,13 @@ const TOCDrawer = (props: any) => {
                             </div>
                         </div>
                         <Divider />
-                        <Box className={"toc"}
+                        <Box className={"tocbody toc"}>
+                            {toc && parse(toc, options)}
+                        </Box>
+                        {/* <Box className={"tocbody toc"}
                             // w="20vw"
                             dangerouslySetInnerHTML={{ __html: toc }}
-                        />
+                        /> */}
                         <div className="inject overflow-y-auto overflow-x-hidden">
                         </div>
                     </>
@@ -99,8 +77,5 @@ const TOCDrawer = (props: any) => {
         </Drawer>
     )
 }
-
-
-
 
 export default TOCDrawer
