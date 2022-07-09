@@ -220,7 +220,6 @@ transform: rotate(10deg);
 }
 
 
-
 .toc ul li{list-style-type: none;}
 
 .toc ul>li {
@@ -282,11 +281,7 @@ ali>a {
   padding: 5px;
 }
 
-.docbody {
-  overflow: hidden;
-  overflow-x: hidden;
-  overflow-y: hidden;
-}
+
 
 .docbody img{
   /* max-width: 90vw!important; */
@@ -296,7 +291,10 @@ ali>a {
  /* width: 80%; */
   margin-top: 5px;
   /* padding: 30px; */
-  border-radius: 15px;
+  border-radius: 10px;
+  border-color: #000000!important;
+  border-style: solid!important;
+  border-width: 1px!important;
 }
 
 .body-scroll-box{
@@ -307,7 +305,7 @@ ali>a {
 }
 
 .docbody  .image-alt{
-  color: rgb(24, 146, 95);
+  color: rgb(103, 131, 119);
   max-width: 90vw!important;
   display: block;
   /* width: 50%; */
@@ -315,11 +313,12 @@ ali>a {
   align-items: center;
   justify-content: center;
   padding-bottom: 30px;
+  font-size: 18px;
 }
 
 
 .docbody hr{
-  border: 3px solid rgb(10, 110, 60);
+  border: 1px solid rgb(116, 134, 125);
   margin-top: 20px!important;
   margin-bottom: 20px!important;
 }
@@ -340,15 +339,59 @@ ali>a {
   border-bottom: 1px solid rgb(170, 170, 170);
   margin-bottom: 23px!important;
 }
+.docbody h2{
+  font-size: 38px!important;
+  font-family: "Ropa Sans";
+  padding-left: 1px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+/* background-color: #08f; */
+  border-bottom: 1px solid rgb(170, 170, 170);
+  margin-bottom: 23px!important;
+}
 
 .docbody h3{
-  font-size: 38px!important;
+  font-size: 34px!important;
   font-family: "Ropa Sans";
   padding-left: 25px;
   padding-top: 10px;
   padding-bottom: 20px;
 
 }
+
+.docbody h4{
+  font-size: 28px!important;
+  font-family: "Ropa Sans";
+  padding-left: 1px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+/* background-color: #08f; */
+  border-bottom: 1px solid rgb(170, 170, 170);
+  margin-bottom: 23px!important;
+}
+
+.docbody h5{
+  font-size: 22px!important;
+  font-family: "Ropa Sans";
+  padding-left: 1px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+/* background-color: #08f; */
+  border-bottom: 1px solid rgb(170, 170, 170);
+  margin-bottom: 23px!important;
+}
+
+.docbody h6{
+  font-size: 18px!important;
+  font-family: "Ropa Sans";
+  padding-left: 1px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+/* background-color: #08f; */
+  border-bottom: 1px solid rgb(170, 170, 170);
+  margin-bottom: 23px!important;
+}
+
 
 .docbody ol{
   margin-top: 20px!important;
@@ -370,8 +413,29 @@ ali>a {
   margin-left: 20px;
 }
 
+.toc-of-body-all {
+  background-color: rgba(229, 230, 228, 0.61)!important;
+  /* border-style: dashed; */
+  border-width: 1px;
+}
+
+.controls1 {
+
+  background-color: rgb(134, 241, 12);
+}
+
+
+.toc-of-body-all ul { 
+  list-style-type: none; 
+}
+
+
 .toc-of-body-all:hover {
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(255, 255, 255)!important;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+
 }
 
 .toc-of-body .active{
@@ -382,6 +446,7 @@ ali>a {
   padding-left: 10px;
   margin-top: 3px;
   margin-bottom: 3px;
+  font-size: 20px;
 }
 
 .toc-of-body .inactive{
@@ -394,9 +459,23 @@ ali>a {
   margin-bottom: 3px;
 }
 
-.toc-of-body .expanded{
-  background-color: aqua;
+.collapsed {
+  /* border-radius: 10px;   */
+  background-color: rgba(185, 185, 185, 0.904)!important;
 }
+.outer-scroll {
+  
+}
+
+.toc-of-body ul{
+  /* height: 50px; */
+}
+
+.expanded{
+  /* background-color: aqua!important; */
+  height: 75vh!important;
+}
+
 
 
 .SpinnerOverlay {
