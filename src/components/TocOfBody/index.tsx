@@ -52,7 +52,7 @@ export function TocOfBody({
 
     return (
         <VStack aria-label="Table of Contents"
-            className="toc-of-body-all"
+            className={expansion == State.Collapsed ? "collapsed" : "toc-of-body-all"}
             borderRadius={"15px"}
             py={"15px"}
             zIndex={100}
@@ -64,9 +64,11 @@ export function TocOfBody({
                     <Box w="100%" >
                         {expansion == State.Normal ? (
                             <UnfoldMore onClick={expand} size={"20px"} cursor="pointer" />
-                        ) : (
-                            <UnfoldLess onClick={normal} size={"20px"} cursor="pointer" />
-                        )}
+                        )
+                            :
+                            (
+                                <UnfoldLess onClick={normal} size={"20px"} cursor="pointer" />
+                            )}
                     </Box>
                     <Box alignItems={"center"} justifyContent={"right"} cursor="pointer">
                         <Dismiss onClick={collapse} size={"20px"} />
@@ -77,35 +79,59 @@ export function TocOfBody({
             <Box px="20px"
                 w={"100%"}
                 ref={scrollRef}
-                className={classNames("outer-scroll", {
-                    expanded: expansion == State.Expanded,
-                    collapsed: expansion == State.Collapsed,
-                    normal: expansion == State.Normal,
-                })}
+            // className={classNames("", {
+            //     expanded: expansion == State.Expanded,
+            //     // collapsed: expansion == State.Collapsed,
+            //     normal: expansion == State.Normal,
+            // })}
             >
                 {expansion == State.Collapsed ? (
                     <Box alignItems={"center"} justifyContent={"right"} cursor="pointer" >
                         <Restore onClick={normal} size={"20px"} />
                     </Box>
                 ) : (
-                    <VStack w={"20vw"} className="toc-of-body">
+                        <VStack w={"20vw"}
+                            // className="toc-of-body"
+                            className={expansion === State.Normal ? "toc-of-body" : "toc-of-body expanded"}
+                        >
                         <Box w="100%" role="heading" aria-level={6}>
                             contents:
                         </Box>
                         <Box alignItems="left" w="100%">
                             <ul>
-                                {heading.map((h: any, key: any) => (
-                                    <Box key={key} fontSize="18px" pl="15px" color={"gray.900"}>
-                                        <li>
-                                            <H
-                                                entry={{ "text": h.title, id: h.id, level: h.level, items: h.items }}
-                                                inView={inViewId}
-                                                scroll={scroll}
-                                                onClick={dismissIfExpanded}
-                                            />
-                                        </li>
-                                    </Box>
-                                ))}
+                                    {((expansion !== State.Expanded) && heading.map((o: any) => o.id).indexOf(inViewId) - 1 > 0) &&
+                                        (<Box fontSize="18px" pl="15px" color={"gray.900"}>
+                                            <li><a className={"inactive"}>{"..."} </a></li></Box>)
+                                    }
+                                    {
+                                        heading.map((h: any, key: any) => {
+                                            console.log(key, inViewId, heading.map((o: any) => o.id).indexOf(inViewId));
+                                            if (
+                                                (expansion === State.Expanded) ||
+                                                ((key > heading.map((o: any) => o.id).indexOf(inViewId) - 2) &&
+                                                    (key < heading.map((o: any) => o.id).indexOf(inViewId) + 2)))
+                                                return (
+                                                    <Box key={key} fontSize="18px" pl="15px" color={"gray.900"}>
+                                                        <li>
+                                                            <H
+                                                                entry={{ "text": h.title, id: h.id, level: h.level, items: h.items }}
+                                                                inView={inViewId}
+                                                                scroll={scroll}
+                                                                onClick={dismissIfExpanded}
+                                                            />
+                                                        </li>
+                                                    </Box>
+                                                )
+                                        }
+                                        )
+                                    }
+                                    {((expansion !== State.Expanded) && heading.map((o: any) => o.id).indexOf(inViewId) + 2 < heading.length) &&
+                                        (
+                                            <Box key={-1} fontSize="18px" pl="15px" color={"gray.900"}>
+                                                <li><a
+                                                    // href={`#${}`}
+                                                    className={"inactive"}>{"..."} </a></li></Box>)
+                                    }
                             </ul>
                         </Box>
                     </VStack>
@@ -175,7 +201,6 @@ function useInViewId(ref: any, headingSelector: string) {
             const inView = Array.from(inViewSet.entries())
                 .map(([id, el]) => [id, el.offsetTop] as const)
                 .filter(([id, _]) => !!id);
-            console.log(inView)
 
             if (inView.length > 0) {
                 setInViewId(
@@ -188,7 +213,6 @@ function useInViewId(ref: any, headingSelector: string) {
             rootMargin: "0px 0px -20% 0px",
         });
         // if (typeof window === 'object') {
-        console.log(headingSelector, ref)
         if (typeof ref !== null && typeof ref?.current !== "undefined") {
             for (const el of
                 (ref.current as Element).querySelectorAll<Element>(headingSelector)) {
